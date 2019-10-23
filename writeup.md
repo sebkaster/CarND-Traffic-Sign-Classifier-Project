@@ -93,30 +93,25 @@ My final model consisted of the following layers:
 ![alt text][image9]
 
 
-#### 3. Describe how you trained your model. The discussion can include the type of optimizer, the batch size, number of epochs and any hyperparameters such as learning rate.
+#### 3. Parameters of the Model
 
-For the training I used the Adam optimizer and an decreasing learning rate. Depend on the epoch the learning rate changes exponentially. 
-Furthermore, I used a batch size of 128 and 100 epochs. After the training is finished 
+For the training I used the Adam optimizer and an decreasing learning rate. Dependent on the current epoch the, the learning rate changes exponentially. 
+Furthermore, I used a batch size of 128 and 100 epochs. After each epoch the model is saved if it is better (based on accuracy) than any previous one. By doing so we keep track of the best model we trained during the training process.
+
+Finally, the configuration of the best trained model is used for the prediction on new, unseen images.
+
 
 #### 4. Description of the approach taken for finding a solution
+
+I started by implementing a basic version of the LeNet architecture presented in the Udacity lectures. Based on this architecture I tried to optimize the performance of the model.
+Firstly, I added dropout layers and l2-regularizers for regularizatio in order to avoid overfitting. Furthermore, I played around with adding and removing dense layers. Finally, I decided to remove one dense layer which gave the best performance for me.
+
+Moreover, I used batch normalization to increase the independence of the single layers and improve the training speed.
 
 My final model results were:
 * training set accuracy of 97.6 %
 * validation set accuracy of 97.1 %
 * test set accuracy of 97.3 %
-
-If an iterative approach was chosen:
-* What was the first architecture that was tried and why was it chosen?
-* What were some problems with the initial architecture?
-* How was the architecture adjusted and why was it adjusted? Typical adjustments could include choosing a different model architecture, adding or taking away layers (pooling, dropout, convolution, etc), using an activation function or changing the activation function. One common justification for adjusting an architecture would be due to overfitting or underfitting. A high accuracy on the training set but low accuracy on the validation set indicates over fitting; a low accuracy on both sets indicates under fitting.
-* Which parameters were tuned? How were they adjusted and why?
-* What are some of the important design choices and why were they chosen? For example, why might a convolution layer work well with this problem? How might a dropout layer help with creating a successful model?
-
-If a well known architecture was chosen:
-* What architecture was chosen?
-* Why did you believe it would be relevant to the traffic sign application?
-* How does the final model's accuracy on the training, validation and test set provide evidence that the model is working well?
- 
 
 ### Test a Model on New Images
 
@@ -149,11 +144,9 @@ Here are the results of the prediction:
 | No entry			| No entry      							|
 | Speed limit (120km/h)			| Speed limit (120km/h)	     							|
 
-
 The model was able to correctly guess 6 of the 6 traffic signs, which gives an accuracy of 100%. This compares favorably to the accuracy on the test set of 97.3 %. 
 
-#### 3. Describe how certain the model is when predicting on each of the five new images by looking at the softmax probabilities for each prediction. Provide the top 5 softmax probabilities for each image along with the sign type of each probability. (OPTIONAL: as described in the "Stand Out Suggestions" part of the rubric, visualizations can also be provided such as bar charts)
-
+#### 3. Performance of Model on New Images
 The code for making predictions on my final model is located in the 11th cell of the Ipython notebook.
 
 For the first image, the model is completely sure that this is a turn right ahead traffic sign (~100%).
@@ -217,10 +210,3 @@ While the highest probability is assigned to the correct class, also other speed
 | 0.14					| Speed limit (100km/h)											|
 | 0.13      			| Speed limit (50km/h)					 				|
 | 0.13				    | Speed limit (60km/h)      							|
-
-
-### Future Work
-
-For the future work, the following points can be taken into account:
-
-* Optimize the architecture of the model
