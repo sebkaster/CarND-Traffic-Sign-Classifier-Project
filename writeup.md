@@ -22,7 +22,13 @@ The steps of this project are the following:
 [image6]: ./new-test-images/test3.jpg "Traffic Sign 3"
 [image7]: ./new-test-images/test4.jpg "Traffic Sign 4"
 [image8]: ./new-test-images/test5.jpg "Traffic Sign 5"
-[image10]: ./new-test-images/test6.jpg "Traffic Sign 5"
+[image10]: ./new-test-images/test6.jpg "Traffic Sign 6"
+[image11]: ./examples/orig_aug.png "Augmentation Original"
+[image12]: ./examples/rotate_aug.png "Augmentation Rotation"
+[image13]: ./examples/translate_aug.png "Augmentation Translation"
+[image14]: ./examples/scale_aug.png "Augmentation Scale"
+[image15]: ./examples/warp_aug.png "Augmentation Warping"
+[image16]: ./examples/brightness_aug.png "Augmentation Brightness"
 
 ---
 
@@ -43,26 +49,41 @@ Here is an exploratory visualization of the data set. It is a bar chart showing 
 
 ### Design and Test a Model Architecture
 
-#### 1.  
+#### 1. Preprocessing of Data
 
-I decided to generate additional data because ... 
+As a first step I decided to perform a histogram equalization on all images of the test, validation
+and training data set in order to improve the contrast. Since histogram equalization only applies to
+the inensity channel I converted the RGB image to YUV colorspace and performed the histogram equalization 
+on the Y channel. Finally, the image is converted back to RGB colorspace.
 
-As a first step, I decided to convert the images to grayscale because ...
+The training data set consists of 12630 labeled images. While this seems to be a great number it is advantageous to have more data samples with different attributes.
+Moreover, the training data set is unevenly distributed as can be seen in the bar chart diagram of the last section (see Data Set Summary & Exploration).
+In order to extend this data set, image augmentation is performed on images of the training data set. Therefore, the following operations are considered:
 
-Here is an example of a traffic sign image before and after grayscaling.
+* random brightness: The brightness of the image is randomly adjusted. This operation is executed on the V channel of the HSV colorspace.
+* random translate: Translation by random factor in the range of [-2,2]
+* random scale: Scaling of the image by a random factor in the range of [-2, 2]
+* random rotate: Rotation of the image by a random value in the range of [-20, 20].
+* random warp: Warp fixed source points to random destination points.
 
-![alt text][image2]
+The following images show the augmentation operations on an example image:
 
-As a last step, I normalized the image data because ...
+![alt text][image11]
 
+![alt text][image12]
 
-To add more data to the the data set, I used the following techniques because ... 
+![alt text][image13]
 
-Here is an example of an original image and an augmented image:
+![alt text][image14]
 
-![alt text][image3]
+![alt text][image15]
 
-The difference between the original data set and the augmented data set is the following ... 
+![alt text][image16]
+
+I generated image augmentation until all 43 classes had 3500 samples.
+
+As a last step, I converted the images to greyscale and normalized them. The normalization is essential since the
+ ranges of the distributions of feature values are likely be different for each feature.
 
 
 #### 2. Final model architecture
@@ -103,6 +124,18 @@ If a well known architecture was chosen:
 
 You can find the new images in the folder _new-test-images_.
 
+* _test1.jpg_: Computer animation of the right ahead traffic sign.
+
+* _test2.jpg_: Damaged Ahead only image. 
+
+* _test3.jpg_: Approximately bottum-up view of the go straight or left traffic sign.
+
+* _test4.jpg_: Different style of the children crossing traffic sign.
+
+* _test5.jpg_: Slightly covered image of a no entry traffic sign.
+
+* _test6.jpg_: Speed Limit 120 km/h traffic sign represented by lights. Quiet common on the german Autobahn (highway).
+
 #### 2. Model's predictions on these new traffic signs.
 
 Here are the results of the prediction:
@@ -123,8 +156,9 @@ The model was able to correctly guess 6 of the 6 traffic signs, which gives an a
 
 The code for making predictions on my final model is located in the 11th cell of the Ipython notebook.
 
-For the first image, the model is relatively sure that this is a stop sign (probability of 0.6), and the image does contain a stop sign. The top five soft max probabilities were
-
+For the first image, the model is completely sure that this is a turn right ahead traffic sign (~100%).
+This shows that the trained model is not only able to classify real world images but also artificially created traffic signs.
+ 
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
 | 1.00         			| Turn right ahead 									| 
@@ -133,15 +167,16 @@ For the first image, the model is relatively sure that this is a stop sign (prob
 | <0.01      			| Vehicles over 3.5 metric tons prohibited					 				|
 | <0.01				    | End of all speed and passing limits      							|
 
+The second image is correctly classified as ahead only traffic sign (~100%). This shows that also slightly deformed images are no problem.
 
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
 | 1.00         			| Ahead only 									| 
 | <0.01     				| Go straight or left 										|
-| <0.01					| Turn right ahead											|
-| <0.01      			| Keep left					 				|
+| <0.01					| Turn right ahead											|| <0.01      			| Keep left					 				|
 | <0.01				    | Yield      							|
 
+The third image is correctly classified as ahead only ahead only sign (~100%). The model is able to classify traffic signs regardless of their perspective.
 
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
@@ -151,6 +186,9 @@ For the first image, the model is relatively sure that this is a stop sign (prob
 | 0.01      			| Bumpy road					 				|
 | <0.01				    | Turn right ahead      							|
 
+For the fourth image, the model is relatively sure that this is a children crossing sign (~67%). 
+The model suffers from the fact that this traffic sign has another appearance as the one used for training of the model.
+
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
 | 0.47         			| Children Crossing								| 
@@ -159,6 +197,7 @@ For the first image, the model is relatively sure that this is a stop sign (prob
 | 0.08      			| Beware of ice/snow					 				|
 | 0.08				    | Bicycles crossing      							|
 
+For the fourth image, the model is very sure that this is a no entry sign (~93%). The small covered area only has a small impact on the model's prediction quality.
 
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
@@ -167,6 +206,9 @@ For the first image, the model is relatively sure that this is a stop sign (prob
 | 0.02					| Keep right											|
 | 0.01      			| No passing					 				|
 | <0.01				    | Stop      							|
+
+For the fifth image, the model is unsure to which traffic sign this image corresponds to. 
+While the highest probability is assigned to the correct class, also other speed limit class get significant probabilities.
 
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
@@ -177,4 +219,8 @@ For the first image, the model is relatively sure that this is a stop sign (prob
 | 0.13				    | Speed limit (60km/h)      							|
 
 
-For the second image ... 
+### Future Work
+
+For the future work, the following points can be taken into account:
+
+* Optimize the architecture of the model
