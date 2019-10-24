@@ -5,6 +5,7 @@
 The steps of this project are the following:
 * Load the data set (see below for links to the project data set)
 * Explore, summarize and visualize the data set
+* Preprocessing and augmentation of the data set
 * Design, train and test a model architecture
 * Use the model to make predictions on new images
 * Analyze the softmax probabilities of the new images
@@ -36,9 +37,6 @@ The steps of this project are the following:
 
 You can find the code of the data summary and exploration in the section _Step 1_ in the notebook.
 
-I used the pandas library to calculate summary statistics of the traffic
-signs data set:
-
 * The size of training set is 12630
 * The size of the validation set is 4410
 * The size of test set is 34799
@@ -57,11 +55,11 @@ You can find the code of the image preprocessing and augmentation in the section
 
 As a first step I decided to perform a histogram equalization on all images of the test, validation
 and training data set in order to improve the contrast. Since histogram equalization only applies to
-the intensity channel I converted the RGB image to YUV colorspace and performed the histogram equalization 
+the intensity channel, I converted the RGB image to YUV colorspace and performed the histogram equalization 
 on the Y channel. Finally, the image is converted back to RGB colorspace.
 
 The training data set consists of 12630 labeled images. While this seems to be a great number it is advantageous to have more data samples with different attributes.
-Moreover, the training data set is unevenly distributed as can be seen in the bar chart diagram of the last section (see Data Set Summary & Exploration).
+Moreover, the training data set is unevenly distributed as can be seen in the bar chart diagram of the last section (see [Data Set Summary & Exploration](#data-set-summary-&-exploration)).
 In order to extend this data set, image augmentation is performed on images of the training data set. Therefore, the following operations are considered:
 
 * random brightness: The brightness of the image is randomly adjusted. This operation is executed on the V channel of the HSV colorspace.
@@ -101,7 +99,7 @@ My final model consisted of the following layers:
 
 #### 3. Parameters of the Model
 
-For the training I used the Adam optimizer and an decreasing learning rate. Dependent on the current epoch the, the learning rate changes exponentially. 
+For the training I used the Adam optimizer and a decreasing learning rate. Dependent on the current epoch, the learning rate changes exponentially. 
 Furthermore, I used a batch size of 128 and 100 epochs. After each epoch the model is saved if it is better (based on accuracy) than any previous one. By doing so we keep track of the best model we trained during the training process.
 
 Finally, the configuration of the best trained model is used for the prediction on new, unseen images.
@@ -127,7 +125,7 @@ You can find the new images in the folder _new-test-images_.
 
 * _test1.jpg_: Computer animation of the right ahead traffic sign.
 
-* _test2.jpg_: Damaged Ahead only image. 
+* _test2.jpg_: Damaged ahead only image. 
 
 * _test3.jpg_: Approximately bottum-up view of the go straight or left traffic sign.
 
