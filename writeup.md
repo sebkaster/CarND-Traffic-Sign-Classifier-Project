@@ -34,6 +34,8 @@ The steps of this project are the following:
 
 ### Data Set Summary & Exploration
 
+You can find the code of the data summary and exploration in the section _Step 1_ in the notebook.
+
 I used the pandas library to calculate summary statistics of the traffic
 signs data set:
 
@@ -51,9 +53,11 @@ Here is an exploratory visualization of the data set. It is a bar chart showing 
 
 #### 1. Preprocessing of Data
 
+You can find the code of the image preprocessing and augmentation in the section _Step 2_ in the notebook.
+
 As a first step I decided to perform a histogram equalization on all images of the test, validation
 and training data set in order to improve the contrast. Since histogram equalization only applies to
-the inensity channel I converted the RGB image to YUV colorspace and performed the histogram equalization 
+the intensity channel I converted the RGB image to YUV colorspace and performed the histogram equalization 
 on the Y channel. Finally, the image is converted back to RGB colorspace.
 
 The training data set consists of 12630 labeled images. While this seems to be a great number it is advantageous to have more data samples with different attributes.
@@ -88,6 +92,8 @@ As a last step, I converted the images to greyscale and normalized them. The nor
 
 #### 2. Final model architecture
 
+You can find the code to model definition, the training process and evaluation on the test set in the section _Step 3_ in the notebook.
+
 My final model consisted of the following layers:
 
 ![alt text][image9]
@@ -104,7 +110,7 @@ Finally, the configuration of the best trained model is used for the prediction 
 #### 4. Description of the approach taken for finding a solution
 
 I started by implementing a basic version of the LeNet architecture presented in the Udacity lectures. Based on this architecture I tried to optimize the performance of the model.
-Firstly, I added dropout layers and l2-regularizers for regularizatio in order to avoid overfitting. Furthermore, I played around with adding and removing dense layers. Finally, I decided to remove one dense layer which gave the best performance for me.
+Firstly, I added dropout layers and l2-regularizers for regularization in order to avoid over-fitting. Furthermore, I played around with adding and removing dense layers. Finally, I decided to remove one dense layer which gave the best performance for me.
 
 Moreover, I used batch normalization to increase the independence of the single layers and improve the training speed.
 
@@ -133,6 +139,7 @@ You can find the new images in the folder _new-test-images_.
 
 #### 2. Model's predictions on these new traffic signs.
 
+
 Here are the results of the prediction:
 
 | Image			        |     Prediction	        					| 
@@ -147,7 +154,8 @@ Here are the results of the prediction:
 The model was able to correctly guess 6 of the 6 traffic signs, which gives an accuracy of 100%. This compares favorably to the accuracy on the test set of 97.3 %. 
 
 #### 3. Performance of Model on New Images
-The code for making predictions on my final model is located in the 11th cell of the Ipython notebook.
+
+The code for making predictions on my final model is located in _Step 4_ of the Ipython notebook.
 
 For the first image, the model is completely sure that this is a turn right ahead traffic sign (~100%).
 This shows that the trained model is not only able to classify real world images but also artificially created traffic signs.
